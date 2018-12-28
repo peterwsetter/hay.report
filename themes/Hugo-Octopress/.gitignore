@@ -1,4 +1,2 @@
-*.exe
+Thumbs.db
 thumbs.db
-s3cmd
-public
