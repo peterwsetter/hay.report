@@ -1,5 +1,5 @@
 theme = "Hugo-Octopress"
-baseURL = "https://hay.report/"
+baseURL = "https://www.hay.report/"
 languageCode = "en-us"
 title = "Hay.Report"
 
