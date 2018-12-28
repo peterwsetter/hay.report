@@ -74,3 +74,7 @@ post = "/post/:year-:month-:day-:title/"
 
   # Remove or set to false to use FontAwesome CDN, otherwise, the theme uses ForkAwesome local fonts.
   # fontAwesome = false
+  
+  ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
+  
+  

@@ -1,6 +1,6 @@
 ---
-title: "About"
-output: html_document
+title: About
+slug: About
 ---
 
 Hay.Report aims to provide insightful analysis of the hay market for producers, buyers, and farmers interested in moving to forages. Launching in January 2019, Hay.Report will begin by exploring possible benchmarks for tracking the market and aggregating commentary from [USDA AMS](https://www.ams.usda.gov/market-news/hay-reports) Market Reporters. 
