@@ -1,5 +1,5 @@
 theme = "Hugo-Octopress"
-baseURL = "http://hay.report/"
+baseURL = "https://hay.report/"
 languageCode = "en-us"
 title = "Hay.Report"
 
@@ -19,6 +19,8 @@ disqusShortname = "Your disqus shortname"
 
 # Number of blog posts in each pagination page
 paginate = 6
+
+ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 
 [permalinks]
 # Configures post URLs
@@ -75,6 +77,6 @@ post = "/post/:year-:month-:day-:title/"
   # Remove or set to false to use FontAwesome CDN, otherwise, the theme uses ForkAwesome local fonts.
   # fontAwesome = false
   
-  ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
+  
   
   
