@@ -33,7 +33,7 @@ post = "/post/:year-:month-:day-:title/"
   author = "Peter Setter"
 
   # This text appears in site header under website title
-  #subtitle = "Subtitle appears under website title"
+  subtitle = "Analysis of the Hay and Forage Market"
 
   # Search engine URL
   searchEngineURL = "https://www.google.com/search"
@@ -64,7 +64,7 @@ post = "/post/:year-:month-:day-:title/"
   # defaultKeywords = ["keyword1" , "keyword2" , "keyword3" , "keyword4"]
 
   # Set to true to hide ReadingTime on posts
-  disableReadingTime = false
+  disableReadingTime = true
 
   # Set to true to disable downloading of remote Google fonts
   disableGoogleFonts = false

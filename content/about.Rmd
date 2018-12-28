@@ -1,5 +1,6 @@
 ---
 title: About
+date: "December 28, 2018"
 slug: About
 ---
 
