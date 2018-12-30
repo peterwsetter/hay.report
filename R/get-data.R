@@ -9,7 +9,12 @@ gs <- gs_title('Plains Hay Report Data')
 
 gs_read(gs) %>% 
   mutate(report_year = lubridate::year(report_date),
-         report_week = lubridate::week(report_date)
+         report_week = lubridate::week(report_date),
+         state = factor(state,
+                        levels = rev(c('Montana', 'Wyoming', 'South Dakota',
+                                   'Colorado', 'Nebraska', 'Kansas',
+                                   'New Mexico', 'Oklahoma', 'Texas')),
+                        ordered = TRUE)
          ) %>% 
   rowwise() %>% 
   mutate(price_avg = mean(c(price_high, price_low), na.rm = TRUE)) %>% 
