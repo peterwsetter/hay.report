@@ -7,6 +7,18 @@ categories: []
 tags: []
 ---
 
+<!--
+Welcome to the Hay Report for the week ending December 22, 2018. Hay dot Report analyzes the hay and forage market across the plains.
+-->
+
+## This Week
+
+- Benchmark Review
+
+<!--
+In this episode, review changes in several benchmark forages.
+-->
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 
@@ -62,16 +74,28 @@ benchmark_table <- . %>%
                align = 'lrr')
 ```
 
+## Thank You
 
-## Alfalfa Squares
+- Jack Carson, Oklahoma Dept of AG-USDA Market News, Oklahoma City, OK
+- Heath Dewey, USDA-CO Dept of Ag Market News Service, Greeley, CO
+- Lana Hutto, USDA Market News Service, Amarillo, TX
+- John Kimbrell, USDA Market News Service, Billings, MT
+- Ross Kotewa, USDA-SD Dept of Ag Market News Service, Sioux Falls, SD
+- Kim Nettleton, Kansas Department of Agriculture, Manhattan, KS
+- Thomas Walthers, USDA NE and USDA WY
 
-```{r aps, fig.height=4.5}
-report_data %>%
-  graph_benchmark(input_forage = 'Alfalfa',
-                  input_shape = 'Squares',
-                  input_quality = 'Premium')
+<!--
+Hay dot Report relies on the data and commentary of the USDA Agriculture Marketing Service. We thank them for their work serving farmers and ranchers across the country.
+-->
 
-```
+## Benchmarks
+
+- Key hay and forage types
+- Multi-state & single state
+
+<!--
+Hay dot Report tracks several hay types to provide a broad view of the market. First is a look at alfalfa followed by grass hay. 
+-->
 
 ## Alfalfa Benchmarks
 
@@ -84,13 +108,36 @@ report_data %>%
     state == 'Kansas' & quality == 'Supreme' & is.na(shape) ~ 'Kansas Supreme Dairy',
     state == 'Texas' & quality == 'Premium/Supreme' & size == 'Large' & shape == 'Squares' ~ 'Texas Premium/Supreme',
     quality == 'Premium' & size == 'Large' & shape == 'Squares' ~ 'Multi-State Premium Large Squares',
-    quality == 'Premium' & size == 'Small' & shape == 'Squares' ~ 'Multi-State Premium Small Squares',
-    forage == 'Dehydrated Alfalfa' & quality == '17%' ~ 'Dehydrated Pellets 17%',
+    #quality == 'Premium' & size == 'Small' & shape == 'Squares' ~ 'Multi-State Premium Small Squares',
+    forage == 'Dehydrated Alfalfa' & quality == '17%' ~ 'Multi-State Dehydrated Pellets 17%',
     TRUE ~ NA_character_
   )) %>% 
   filter(!is.na(benchmark)) %>% 
-  benchmark_table()
+  benchmark_table() ->
+  alfalfa_table
+
+save(alfalfa_table, file = paste0('../data-products/alfalfa-table-', CURRENT_DATE, '.rda'))
+
+alfalfa_table
 ```
+
+<!--
+Prices of Kansas Supreme Dairy Alfalfa and Texas Premium Supreme Alfalfa were steady. 17% dehydrated pellets and premium large squares ticked up in the past week. 
+-->
+
+## Multi-State Alfalfa Squares
+
+```{r aps, fig.height=4.5}
+report_data %>%
+  graph_benchmark(input_forage = 'Alfalfa',
+                  input_shape = 'Squares',
+                  input_quality = 'Premium')
+
+```
+
+<!--
+Breaking down the multi-state alfalfa benchmarks shows
+-->
 
 ## Grass Benchmarks
 
@@ -107,5 +154,22 @@ report_data %>%
     TRUE ~ NA_character_
   )) %>% 
   filter(!is.na(benchmark)) %>% 
-  benchmark_table()
+  benchmark_table() ->
+  grass_table
+
+save(grass_table, file = paste0('../data-products/grass-table-', CURRENT_DATE, '.rda'))
+
+grass_table
 ```
+
+<!--
+
+-->
+
+## Until Next Week
+
+Visit www.hay.report for archives and resources.
+
+<!--
+Thank you for watching. Join Hay dot Report every Saturday for an update on the Plains hay and forage market. In the meantime, visit www.hay.report for archives and resources. 
+-->
