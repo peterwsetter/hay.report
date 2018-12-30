@@ -1,0 +1,175 @@
+---
+title: Template
+author: ''
+date: '2018-12-29'
+slug: template
+categories: []
+tags: []
+---
+
+<!--
+Welcome to the Hay Report for the week ending December 22, 2018. Hay dot Report analyzes the hay and forage market across the plains.
+-->
+
+## This Week
+
+- Benchmark Review
+
+<!--
+In this episode, review changes in several benchmark forages.
+-->
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+
+load('../data/report_data.rds')
+
+CURRENT_DATE <- as.Date('2018-12-22')
+CURRENT_WEEK <- lubridate::week(CURRENT_DATE)
+
+graph_benchmark <- function(input_data, input_forage, 
+                            input_shape, input_quality) {
+  
+  input_data %>%
+  filter(report_week == CURRENT_WEEK,
+         forage == input_forage,
+         shape == input_shape,
+         quality == input_quality,
+         !is.na(price_low)) %>%
+  rowwise() %>% 
+  mutate(price_max = max(c(price_low, price_high), na.rm = TRUE)) %>% 
+  ungroup() %>% 
+  ggplot(aes(x = state, y = price_avg, label = round(price_avg),
+            ymin = price_low, ymax = price_max
+            )
+         ) +
+  geom_pointrange() +
+  theme_bw() +
+    geom_text(vjust = 1.5) +
+  labs(x = 'State',
+        y = 'Price') +
+  facet_wrap(~size, ncol = 1) +
+  coord_flip()
+}
+
+benchmark_table <- . %>% 
+    filter(!is.na(benchmark)) %>% 
+  select(benchmark, report_year, report_week, price_low, price_high) %>% 
+  gather(key = price_type, value = price, contains('price')) %>% 
+  group_by(benchmark, report_year, report_week) %>% 
+  summarize(benchmark_value = median(price, na.rm = TRUE)) %>% 
+  group_by(benchmark) %>% 
+  arrange(benchmark, report_year, report_week) %>% 
+  summarize(current_value = last(benchmark_value) %>% 
+              round(),
+            one_week_change = ((last(benchmark_value) - first(benchmark_value))/first(benchmark_value)) %>% 
+              magrittr::multiply_by(100) %>% 
+              round() %>% 
+              paste0('%')) %>% 
+  knitr::kable(col.names = c('Commodity', 'Current Price', '1 Wk Change'),
+               align = 'lrr')
+```
+
+## Thank You
+
+- Jack Carson, Oklahoma Dept of AG-USDA Market News, Oklahoma City, OK
+- Heath Dewey, USDA-CO Dept of Ag Market News Service, Greeley, CO
+- Lana Hutto, USDA Market News Service, Amarillo, TX
+- John Kimbrell, USDA Market News Service, Billings, MT
+- Ross Kotewa, USDA-SD Dept of Ag Market News Service, Sioux Falls, SD
+- Kim Nettleton, Kansas Department of Agriculture, Manhattan, KS
+- Thomas Walthers, USDA NE and USDA WY
+
+<!--
+Hay dot Report relies on the data and commentary of the USDA Agriculture Marketing Service. We thank them for their work serving farmers and ranchers across the country.
+-->
+
+## Benchmarks
+
+- Key hay and forage types
+- Multi-state & single state
+
+<!--
+Hay dot Report tracks several hay types to provide a broad view of the market. First is a look at alfalfa followed by grass hay. 
+-->
+
+## Alfalfa Benchmarks
+
+```{r alfalfa_benchmarks}
+report_data %>% 
+  filter(forage %in% c('Alfalfa', 'Dehydrated Alfalfa'),
+         !is.na(price_low),
+         between(report_date, CURRENT_DATE - 14, CURRENT_DATE)) %>% 
+  mutate(benchmark = case_when(
+    state == 'Kansas' & quality == 'Supreme' & is.na(shape) ~ 'Kansas Supreme Dairy',
+    state == 'Texas' & quality == 'Premium/Supreme' & size == 'Large' & shape == 'Squares' ~ 'Texas Premium/Supreme',
+    quality == 'Premium' & size == 'Large' & shape == 'Squares' ~ 'Multi-State Premium Large Squares',
+    #quality == 'Premium' & size == 'Small' & shape == 'Squares' ~ 'Multi-State Premium Small Squares',
+    forage == 'Dehydrated Alfalfa' & quality == '17%' ~ 'Multi-State Dehydrated Pellets 17%',
+    TRUE ~ NA_character_
+  )) %>% 
+  filter(!is.na(benchmark)) %>% 
+  benchmark_table() ->
+  alfalfa_table
+
+save(alfalfa_table, file = paste0('../data-products/alfalfa-table-', CURRENT_DATE, '.rda'))
+
+alfalfa_table
+```
+
+<!--
+Prices of Kansas Supreme Dairy Alfalfa and Texas Premium Supreme Alfalfa were steady. 17% dehydrated pellets and premium large squares ticked up in the past week. 
+-->
+
+## Multi-State Alfalfa Squares
+
+```{r aps, fig.height=4.5}
+report_data %>%
+  graph_benchmark(input_forage = 'Alfalfa',
+                  input_shape = 'Squares',
+                  input_quality = 'Premium')
+
+```
+
+<!--
+Breaking down the multi-state alfalfa benchmarks shows
+-->
+
+## Grass Benchmarks
+
+```{r grass_benchmarks}
+report_data %>% 
+  filter(forage %in% c('Grass', 'Coastal Bermuda', 'Bluestem'),
+         !is.na(price_low),
+         between(report_date, CURRENT_DATE - 14, CURRENT_DATE)) %>% 
+  mutate(benchmark = case_when(
+    quality == 'Premium' & size == 'Small' & shape == 'Squares' ~ 'Multi-State Premium Small Squares',
+    quality == 'Good' & size == 'Large' & shape == 'Rounds' ~ 'Multi-State Good Large Rounds',
+    state == 'Texas' & forage == 'Coastal Bermuda' & size == 'Large' & shape == 'Rounds' & quality == 'Good/Premium' ~ 'Texas G/P Coastal Bermuda Large Rounds',
+    forage == 'Bluestem' & size == 'Large' & shape == 'Squares' ~ 'Kansas Bluestem Large Squares',
+    TRUE ~ NA_character_
+  )) %>% 
+  filter(!is.na(benchmark)) %>% 
+  benchmark_table() ->
+  grass_table
+
+save(grass_table, file = paste0('../data-products/grass-table-', CURRENT_DATE, '.rda'))
+
+grass_table
+```
+
+<!--
+
+-->
+
+## Until Next Week
+
+Visit www.hay.report for archives and resources.
+
+<!--
+Thank you for watching. Join Hay dot Report every Saturday for an update on the Plains hay and forage market. In the meantime, visit www.hay.report for archives and resources. 
+-->
