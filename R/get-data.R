@@ -14,7 +14,13 @@ gs_read(gs) %>%
                         levels = rev(c('Montana', 'Wyoming', 'South Dakota',
                                    'Colorado', 'Nebraska', 'Kansas',
                                    'New Mexico', 'Oklahoma', 'Texas')),
-                        ordered = TRUE)
+                        ordered = TRUE),
+         quality_ordered = factor(quality,
+                                  levels = c('Utility', 'Fair', 'Fair/Good',
+                                             'Good', 'Good/Premium', 
+                                             'Premium', 'Premium/Supreme',
+                                             'Supreme'),
+                                  ordered = TRUE)
          ) %>% 
   rowwise() %>% 
   mutate(price_avg = mean(c(price_high, price_low), na.rm = TRUE)) %>% 

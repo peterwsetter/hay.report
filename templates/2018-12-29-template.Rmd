@@ -16,42 +16,96 @@ library(ggplot2)
 
 load('../data/report_data.rds')
 
-report_data %>% 
-    filter(between(report_date, CURRENT_DATE - 14, CURRENT_DATE)) ->
-  datathisweek
-
-
 CURRENT_DATE <- as.Date('2018-12-22')
 CURRENT_WEEK <- lubridate::week(CURRENT_DATE)
-```
 
-
-## Premium Squares
-
-```{r pls, fig.height=4.5}
-report_data %>% 
+graph_benchmark <- function(input_data, input_forage, 
+                            input_shape, input_quality) {
+  
+  input_data %>%
   filter(report_week == CURRENT_WEEK,
-         forage == 'Alfalfa',
-         shape == 'Squares',
-         quality == 'Premium',
-         !is.na(price_low)) %>% 
-  mutate(price_high = ifelse(is.na(price_high), price_low, price_high)) %>% 
-  group_by(state, forage, shape, size) %>% 
-  summarize(price_min = min(price_low),
-            price_max = max(price_high),
-            price_avg = mean(price_avg)) %>% 
-  ggplot(aes(x = state, y = price_avg, 
-            ymin = price_min, ymax = price_max,
-            label = paste0('$',round(price_avg))
+         forage == input_forage,
+         shape == input_shape,
+         quality == input_quality,
+         !is.na(price_low)) %>%
+  rowwise() %>% 
+  mutate(price_max = max(c(price_low, price_high), na.rm = TRUE)) %>% 
+  ungroup() %>% 
+  ggplot(aes(x = state, y = price_avg, label = round(price_avg),
+            ymin = price_low, ymax = price_max
             )
          ) +
   geom_pointrange() +
-  geom_text(vjust = 1.5) +
   theme_bw() +
+    geom_text(vjust = 1.5) +
   labs(x = 'State',
         y = 'Price') +
   facet_wrap(~size, ncol = 1) +
   coord_flip()
+}
+
+benchmark_table <- . %>% 
+    filter(!is.na(benchmark)) %>% 
+  select(benchmark, report_year, report_week, price_low, price_high) %>% 
+  gather(key = price_type, value = price, contains('price')) %>% 
+  group_by(benchmark, report_year, report_week) %>% 
+  summarize(benchmark_value = median(price, na.rm = TRUE)) %>% 
+  group_by(benchmark) %>% 
+  arrange(benchmark, report_year, report_week) %>% 
+  summarize(current_value = last(benchmark_value) %>% 
+              round(),
+            one_week_change = ((last(benchmark_value) - first(benchmark_value))/first(benchmark_value)) %>% 
+              magrittr::multiply_by(100) %>% 
+              round() %>% 
+              paste0('%')) %>% 
+  knitr::kable(col.names = c('Commodity', 'Current Price', '1 Wk Change'),
+               align = 'lrr')
+```
+
+
+## Alfalfa Squares
+
+```{r aps, fig.height=4.5}
+report_data %>%
+  graph_benchmark(input_forage = 'Alfalfa',
+                  input_shape = 'Squares',
+                  input_quality = 'Premium')
 
 ```
 
+## Alfalfa Benchmarks
+
+```{r alfalfa_benchmarks}
+report_data %>% 
+  filter(forage %in% c('Alfalfa', 'Dehydrated Alfalfa'),
+         !is.na(price_low),
+         between(report_date, CURRENT_DATE - 14, CURRENT_DATE)) %>% 
+  mutate(benchmark = case_when(
+    state == 'Kansas' & quality == 'Supreme' & is.na(shape) ~ 'Kansas Supreme Dairy',
+    state == 'Texas' & quality == 'Premium/Supreme' & size == 'Large' & shape == 'Squares' ~ 'Texas Premium/Supreme',
+    quality == 'Premium' & size == 'Large' & shape == 'Squares' ~ 'Multi-State Premium Large Squares',
+    quality == 'Premium' & size == 'Small' & shape == 'Squares' ~ 'Multi-State Premium Small Squares',
+    forage == 'Dehydrated Alfalfa' & quality == '17%' ~ 'Dehydrated Pellets 17%',
+    TRUE ~ NA_character_
+  )) %>% 
+  filter(!is.na(benchmark)) %>% 
+  benchmark_table()
+```
+
+## Grass Benchmarks
+
+```{r grass_benchmarks}
+report_data %>% 
+  filter(forage %in% c('Grass', 'Coastal Bermuda', 'Bluestem'),
+         !is.na(price_low),
+         between(report_date, CURRENT_DATE - 14, CURRENT_DATE)) %>% 
+  mutate(benchmark = case_when(
+    quality == 'Premium' & size == 'Small' & shape == 'Squares' ~ 'Multi-State Premium Small Squares',
+    quality == 'Good' & size == 'Large' & shape == 'Rounds' ~ 'Multi-State Good Large Rounds',
+    state == 'Texas' & forage == 'Coastal Bermuda' & size == 'Large' & shape == 'Rounds' & quality == 'Good/Premium' ~ 'Texas G/P Coastal Bermuda Large Rounds',
+    forage == 'Bluestem' & size == 'Large' & shape == 'Squares' ~ 'Kansas Bluestem Large Squares',
+    TRUE ~ NA_character_
+  )) %>% 
+  filter(!is.na(benchmark)) %>% 
+  benchmark_table()
+```
