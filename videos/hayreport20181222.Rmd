@@ -9,10 +9,11 @@ Welcome to the Hay Report for the week ending December 22, 2018. Hay dot Report 
 
 ## This Week
 
+- Introduce Hay.Report
 - Benchmark Review
 
 <!--
-In this episode, review changes in several benchmark forages.
+In this episode, we will introduce Hay dot report and review changes in several benchmark forages.
 -->
 
 ```{r setup, include=FALSE}
@@ -84,13 +85,23 @@ benchmark_table <- . %>%
 Hay dot Report relies on the data and commentary of the USDA Agriculture Marketing Service. We thank them for their work serving farmers and ranchers across the country.
 -->
 
+## What is Hay.Report?
+
+- Track and analyze prices in hay and forage market
+- Montana, Wyoming, South Dakota, Colorado, Nebraska, Kansas, Oklahoma, and Texas
+- Feedback encouraged!
+
+<!--
+Hay dot Report is a new project that seeks provide analysis of the hay market for farmers and ranchers across the plains states. As the project grows, additional states may be added. This is a new project, so feedback is encouraged.
+-->
+
 ## Benchmarks
 
 - Key hay and forage types
 - Multi-state & single state
 
 <!--
-Hay dot Report tracks several hay types to provide a broad view of the market. First is a look at alfalfa followed by grass hay. 
+Hay dot Report tracks several hay types to provide a broad view of the market and highlight differences across states. First is a look at alfalfa hay followed by grass hay. 
 -->
 
 ## Alfalfa Benchmarks
@@ -112,13 +123,13 @@ report_data %>%
   benchmark_table() ->
   alfalfa_table
 
-save(alfalfa_table, file = paste0('../data-products/alfalfa-table-', CURRENT_DATE, '.rda'))
+save(alfalfa_table, file = paste0('../shared-data-products/alfalfa-table-', CURRENT_DATE, '.rda'))
 
 alfalfa_table
 ```
 
 <!--
-Prices of Kansas Supreme Dairy Alfalfa and Texas Premium Supreme Alfalfa were steady. 17% dehydrated pellets and premium large squares ticked up in the past week. 
+Prices of Kansas Supreme Dairy and Texas Premium Supreme Alfalfa were steady. 17% dehydrated pellets and premium large squares ticked up in the past week. 
 -->
 
 ## Multi-State Alfalfa Squares
@@ -132,7 +143,7 @@ report_data %>%
 ```
 
 <!--
-Breaking down the multi-state alfalfa benchmarks shows
+Breaking down the multi-state alfalfa benchmarks into price averages -- the labeled dots -- and the range -- the length of the lines. Wyoming 
 -->
 
 ## Grass Benchmarks
