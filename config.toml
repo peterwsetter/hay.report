@@ -2,6 +2,8 @@ theme = "Hugo-Octopress"
 baseURL = "https://www.hay.report/"
 languageCode = "en-us"
 title = "Hay.Report"
+ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$", "\\.rds$"]
+
 
 [[menu.main]]
   Name = "Home"
@@ -19,8 +21,6 @@ disqusShortname = "Your disqus shortname"
 
 # Number of blog posts in each pagination page
 paginate = 6
-
-ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 
 [permalinks]
 # Configures post URLs

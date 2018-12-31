@@ -1,5 +1,5 @@
 ---
-title: "Untitled"
+title: "Hay.Report for Dec 22, 2018"
 output: ioslides_presentation
 ---
 
@@ -9,10 +9,11 @@ Welcome to the Hay Report for the week ending December 22, 2018. Hay dot Report 
 
 ## This Week
 
+- Introduce Hay.Report
 - Benchmark Review
 
 <!--
-In this episode, review changes in several benchmark forages.
+In this episode, we will introduce Hay dot report and review changes in several benchmark forages. 
 -->
 
 ```{r setup, include=FALSE}
@@ -84,13 +85,23 @@ benchmark_table <- . %>%
 Hay dot Report relies on the data and commentary of the USDA Agriculture Marketing Service. We thank them for their work serving farmers and ranchers across the country.
 -->
 
+## What is Hay.Report?
+
+- Track and analyze prices in hay and forage market
+- Montana, Wyoming, South Dakota, Colorado, Nebraska, Kansas, Oklahoma, and Texas
+- Feedback encouraged!
+
+<!--
+Hay dot Report is a new project that seeks to provide analysis of the hay market for farmers and ranchers across the plains states. As the project grows, additional states may be added. This is a new project, so feedback is encouraged, and changes will be made from week-to-week.
+-->
+
 ## Benchmarks
 
 - Key hay and forage types
 - Multi-state & single state
 
 <!--
-Hay dot Report tracks several hay types to provide a broad view of the market. First is a look at alfalfa followed by grass hay. 
+Hay dot Report tracks several hay types to provide a broad view of the market and highlight differences across states. First is a look at alfalfa hay followed by grass hay. 
 -->
 
 ## Alfalfa Benchmarks
@@ -112,18 +123,18 @@ report_data %>%
   benchmark_table() ->
   alfalfa_table
 
-save(alfalfa_table, file = paste0('../data-products/alfalfa-table-', CURRENT_DATE, '.rda'))
+save(alfalfa_table, file = paste0('../shared-data-products/alfalfa-table-', CURRENT_DATE, '.rda'))
 
 alfalfa_table
 ```
 
 <!--
-Prices of Kansas Supreme Dairy Alfalfa and Texas Premium Supreme Alfalfa were steady. 17% dehydrated pellets and premium large squares ticked up in the past week. 
+Prices of Kansas Supreme Dairy and Texas Premium Supreme Alfalfa were steady. 17% dehydrated pellets and premium large squares ticked up in the past week. 
 -->
 
 ## Multi-State Alfalfa Squares
 
-```{r aps, fig.height=4.5}
+```{r aps}
 report_data %>%
   graph_benchmark(input_forage = 'Alfalfa',
                   input_shape = 'Squares',
@@ -132,7 +143,19 @@ report_data %>%
 ```
 
 <!--
-Breaking down the multi-state alfalfa benchmarks shows
+Breaking down the multi-state alfalfa benchmarks into price averages -- the labeled dots -- and the price range -- the length of the lines. There are two dots for Wyoming because there were prices reported for two regions. $150 was the median price in Central and Western Wyoming, while the median was $50 higher in the Eastern region of the state.
+-->
+
+## Third Cutting in NW Wyoming
+
+Thomas Walthers, Wyoming Hay Report, Dec 13, 2018
+
+> Some hay producers are finishing up on 
+their third cutting of alfalfa in the NW area of the state. Other areas 
+of the state it’s been cold and wintery. 
+
+<!--
+The relatively low price of Large Squares in Wyoming is likely due to recent finishing of third cuttings, as reported by Thomas Walthers. This offers some market opportunity for producers in at area, especially compared to the neighoring regions.
 -->
 
 ## Grass Benchmarks
@@ -143,7 +166,7 @@ report_data %>%
          !is.na(price_low),
          between(report_date, CURRENT_DATE - 14, CURRENT_DATE)) %>% 
   mutate(benchmark = case_when(
-    quality == 'Premium' & size == 'Small' & shape == 'Squares' ~ 'Multi-State Premium Small Squares',
+    #forage == 'Grass' & quality == 'Premium' & size == 'Small' & shape == 'Squares' ~ 'Multi-State Premium Small Squares',
     quality == 'Good' & size == 'Large' & shape == 'Rounds' ~ 'Multi-State Good Large Rounds',
     state == 'Texas' & forage == 'Coastal Bermuda' & size == 'Large' & shape == 'Rounds' & quality == 'Good/Premium' ~ 'Texas G/P Coastal Bermuda Large Rounds',
     forage == 'Bluestem' & size == 'Large' & shape == 'Squares' ~ 'Kansas Bluestem Large Squares',
@@ -153,19 +176,43 @@ report_data %>%
   benchmark_table() ->
   grass_table
 
-save(grass_table, file = paste0('../data-products/grass-table-', CURRENT_DATE, '.rda'))
+save(grass_table, file = paste0('../shared-data-products/grass-table-', CURRENT_DATE, '.rda'))
 
 grass_table
 ```
 
 <!--
+Outside of Texas, grass hay prices ticked down on Kansas Bluestem Large Squares as and Good Large Rounds. The Good Premium Coastal Bermuda Large Rounds remained unchanged at a price nearly 70% higher than the median Good Large Rounds in other states.
+-->
 
+## Shortages in Texas
+
+Lana Hutto, Texas Hay Report, Dec 21, 2018
+
+> Demand was good on limited to moderate supply.  A 
+variety of hay continued to be contracted and bought out to meet demands 
+of dairies, feed yards and livestock owners.  Coastal Bermuda has become 
+difficult to find as well as the freight to get it to the Panhandle tacks 
+on costs.  Producers in East, North and South Texas report there may be a 
+shortage due to army worms, early frosts and rain hampering their 4th 
+cutting.
+
+<!--
+This price difference is reflective of the current shortage and a possible coming shortage in Texas. Lana Hutto reported that: Coastal Bermuda has become 
+difficult to find as well as the freight to get it to the Panhandle tacks 
+on costs.  Producers in East, North and South Texas report there may be a 
+shortage due to army worms, early frosts and rain hampering their 4th 
+cutting.
 -->
 
 ## Until Next Week
 
-Visit www.hay.report for archives and resources.
+Thank you for watching this test episode of Hay.Report
 
 <!--
-Thank you for watching. Join Hay dot Report every Saturday for an update on the Plains hay and forage market. In the meantime, visit www.hay.report for archives and resources. 
+Thank you for watching. Hay dot Report will post an update every weekend on the Plains hay and forage market. Feedback? Please leave a comment.
 -->
+
+##
+
+
