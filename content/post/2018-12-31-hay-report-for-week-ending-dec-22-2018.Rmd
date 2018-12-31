@@ -13,13 +13,13 @@ This week, Hay.Report published a test episode of its weekly round-up of the hay
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/k_JL4sOEV7c" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-```{r}
+```{r, echo = FALSE}
 load('../../shared-data-products/alfalfa-table-2018-12-22.rda')
 
 alfalfa_table
 ```
 
-```{r}
+```{r, echo=FALSE}
 load('../../shared-data-products/grass-table-2018-12-22.rda')
 
 grass_table
