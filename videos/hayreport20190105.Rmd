@@ -43,7 +43,8 @@ report_data %>%
   left_join(region_lookup,
             by = c('state' = 'state',
                    'region' = 'region')) %>%
-  filter(between(report_date, CURRENT_DATE - 31, CURRENT_DATE)) ->
+  filter(between(report_date, CURRENT_DATE - 31, CURRENT_DATE)) %>% 
+  replace_na(list(size = '', shape = '')) ->
   video_data
 
 ## Functions
@@ -125,9 +126,9 @@ Hay dot Report tracks several hay types to provide a broad view of the market. F
 video_data %>% 
   filter(forage %in% c('Alfalfa', 'Dehydrated Alfalfa'),
          !is.na(price_low),
-         between(report_date, CURRENT_DATE - 28, CURRENT_DATE)) %>% 
+         between(report_date, CURRENT_DATE - 14, CURRENT_DATE)) %>% 
   mutate(benchmark = case_when(
-    state == 'Kansas' & quality == 'Supreme' & is.na(shape) ~ 'Kansas Supreme Dairy',
+    state == 'Kansas' & quality == 'Supreme' & shape == '' ~ 'Kansas Supreme Dairy',
     state == 'Texas' & quality == 'Premium/Supreme' & size == 'Large' & shape == 'Squares' ~ 'Texas Premium/Supreme',
     quality == 'Premium' & size == 'Large' & shape == 'Squares' ~ 'Multi-State Premium Large Squares',
     #quality == 'Premium' & size == 'Small' & shape == 'Squares' ~ 'Multi-State Premium Small Squares',
@@ -165,7 +166,20 @@ Breaking down the multi-state alfalfa benchmarks shows
 
 ##
 
-```{r apss, fig.height=4.5}
+```{r apls, fig.height=4.5}
+video_data %>%
+  #filter(state == 'Texas') %>% 
+  graph_benchmark(input_forage = 'Alfalfa',
+                  input_quality = 'Premium/Supreme',
+                  input_size = 'Large',
+                  input_shape = 'Squares'
+                  )
+
+```
+
+##
+
+```{r tpsls, fig.height=4.5}
 video_data %>%
   graph_benchmark(input_forage = 'Alfalfa',
                   input_quality = 'Premium',
@@ -202,6 +216,19 @@ grass_table
 <!--
 
 -->
+
+##
+
+```{r cbpss, fig.height=4.5}
+video_data %>%
+  filter(state == 'Texas') %>% 
+  graph_benchmark(input_forage = 'Coastal Bermuda',
+                  input_quality = 'Good/Premium',
+                  input_size = 'Large',
+                  input_shape = 'Rounds'
+                  )
+
+```
 
 ## Until Next Week
 
