@@ -1,5 +1,6 @@
 ---
-title: "Hay.Report for Jan 5, 2019"
+title: "Weather Opens Opportunities in the North, Threatens Central and South"
+subtitle: "Hay.Report for Jan 5, 2019"
 output: ioslides_presentation
 ---
 
@@ -9,15 +10,13 @@ Welcome to the Hay Report for the week ending January 5, 2019. Hay dot Report an
 
 ## This Week
 
-- Colorado and Kansas still on break
-- Highlights from the AMS commentary
-- Benchmark Review
+- No report this week from Corisca, SD, Colorado, or Kansas
+- Mild weather in Northern Plains reducing usage and increasing exports
+- Could a jump in costs be coming in the Central and Southern Plains?
 
 <!--
-Colorado and Kansas are still on break.
-In this episode, 
-Highlights from the AMS commentary
-and review changes in several benchmark forages.
+There was no report this week from the Corsica hay auction, Colorado, or Kansas.
+In this episode, weather is leading to opportunities for producers in the Northern Plains, but could a jump in prices be coming for the Central and Southern Plains?
 -->
 
 ```{r setup, include=FALSE}
@@ -44,7 +43,7 @@ report_data %>%
             by = c('state' = 'state',
                    'region' = 'region')) %>%
   filter(between(report_date, CURRENT_DATE - 31, CURRENT_DATE)) %>% 
-  replace_na(list(size = '', shape = '')) ->
+  replace_na(list(size = '', shape = '', quality = '')) ->
   video_data
 
 ## Functions
@@ -93,7 +92,7 @@ benchmark_table <- . %>%
               magrittr::multiply_by(100) %>% 
               round() %>% 
               paste0('%')) %>% 
-  knitr::kable(col.names = c('Commodity', 'Current Price', '2 Wk Change'),
+  knitr::kable(col.names = c('Commodity', 'Benchmark Price', '2 Wk Change'),
                align = 'lrr')
 ```
 
@@ -120,9 +119,9 @@ Hay dot Report relies on the data and commentary of the USDA Agriculture Marketi
 Hay dot Report tracks several hay types to provide a broad view of the market. First is a look at alfalfa followed by grass hay. 
 -->
 
-## Alfalfa Benchmarks
+## 
 
-```{r alfalfa_benchmarks}
+```{r alfalfa_benchmarks, eval = FALSE}
 video_data %>% 
   filter(forage %in% c('Alfalfa', 'Dehydrated Alfalfa'),
          !is.na(price_low),
@@ -131,7 +130,7 @@ video_data %>%
     state == 'Kansas' & quality == 'Supreme' & shape == '' ~ 'Kansas Supreme Dairy',
     state == 'Texas' & quality == 'Premium/Supreme' & size == 'Large' & shape == 'Squares' ~ 'Texas Premium/Supreme',
     quality == 'Premium' & size == 'Large' & shape == 'Squares' ~ 'Multi-State Premium Large Squares',
-    #quality == 'Premium' & size == 'Small' & shape == 'Squares' ~ 'Multi-State Premium Small Squares',
+    quality == 'Premium' & size == 'Small' & shape == 'Squares' ~ 'Multi-State Premium Small Squares',
     forage == 'Dehydrated Alfalfa' & quality == '17%' ~ 'Multi-State Dehydrated Pellets 17%',
     TRUE ~ NA_character_
   )) %>% 
@@ -139,16 +138,10 @@ video_data %>%
   benchmark_table() ->
   alfalfa_table
 
-save(alfalfa_table, file = paste0('../data-products/alfalfa-table-', CURRENT_DATE, '.rda'))
+save(alfalfa_table, file = paste0('../shared-data-products/alfalfa-table-', CURRENT_DATE, '.rda'))
 
 alfalfa_table
 ```
-
-<!--
-Prices of Kansas Supreme Dairy Alfalfa and Texas Premium Supreme Alfalfa were steady. 17% dehydrated pellets and premium large squares ticked up in the past week. 
--->
-
-## 
 
 ```{r apls, fig.height=4.5}
 video_data %>%
@@ -161,7 +154,7 @@ video_data %>%
 ```
 
 <!--
-Breaking down the multi-state alfalfa benchmarks shows
+After the holidays, benchmark alfalfa commodities are steady. Premium Large Square median prices and ranges were unchanged from previous reports.
 -->
 
 ##
@@ -177,6 +170,10 @@ video_data %>%
 
 ```
 
+<!--
+Texas Premium Supreme Large Squares also remained steady. 
+-->
+
 ##
 
 ```{r tpsls, fig.height=4.5}
@@ -189,10 +186,13 @@ video_data %>%
 
 ```
 
+<!--
+After ticking up for a week, median prices for Premium Small Squares ticked back down. The price spread between the Northern Plains and the High Plains of Texas is as large as the distance between the two regions. Even with the hundred dollar difference between regions and declining fuel prices, the eight hundred plus mile shipping cost may be too great for this commodity.
+-->
 
-## Grass Benchmarks
+##
 
-```{r grass_benchmarks}
+```{r grass_benchmarks, eval = FALSE}
 report_data %>% 
   filter(forage %in% c('Grass', 'Coastal Bermuda', 'Bluestem'),
          !is.na(price_low),
@@ -213,12 +213,6 @@ save(grass_table, file = paste0('../data-products/grass-table-', CURRENT_DATE, '
 grass_table
 ```
 
-<!--
-
--->
-
-##
-
 ```{r cbpss, fig.height=4.5}
 video_data %>%
   filter(state == 'Texas') %>% 
@@ -230,10 +224,63 @@ video_data %>%
 
 ```
 
+<!--
+Turning to grass, on December 14, Lana Hutto reported that: "Coastal Bermuda producers in East, North and South Texas have battled army worms, early frosts and rain in getting their 4th cutting therefore reports of short supply with many producers already sold out." As of now, prices are steady across the two regions.
+-->
+
+##
+
+```{r cbpss, fig.height=4.5}
+video_data %>%
+  graph_benchmark(input_forage = 'Grass',
+                  input_quality = 'Good',
+                  input_size = 'Large',
+                  input_shape = 'Rounds'
+                  )
+
+```
+
+<!--
+The price for Good Large Grass Rounds is largely steady, but prices at Corsica and in Eastern and Central Nebraska suggest a slight downward trend. 
+-->
+
+## Higher Prices on the Horizon?
+
+AMS commentary suggests higher prices may be coming to the Central and Southern Plains
+
+<!--
+Despite prices being steady to a slight downward trend, there are concerns across the Central and Northern plains that recent weather may lead to higher prices.
+-->
+
+##
+
+```{r cornstalks, fig.height=4.5}
+video_data %>%
+  filter(forage == 'Cornstalks') %>% 
+  rowwise() %>% 
+  mutate(price_max = max(c(price_low, price_high), na.rm = TRUE),
+         report_week_ending = week_ending(report_date),
+         Ground = ifelse(shape == 'Ground', 'Ground', 'Baled')) %>% 
+  ungroup() %>% 
+  ggplot(aes(x = report_week_ending, y = price_avg, 
+             label = paste(region.abb, round(price_avg)),
+            ymin = price_low, ymax = price_max
+            )
+         ) +
+  geom_pointrange() +
+  ggrepel::geom_text_repel(nudge_x = 1, aes(color = Ground)) +
+  scale_color_manual(values = c('black', 'red')) +
+  theme_bw() +
+  labs(#title = paste(input_forage, input_quality, input_size, input_shape),
+       x = 'Week Ending',
+        y = 'Price') 
+
+```
+
 ## Until Next Week
 
 Visit www.hay.report for archives and resources.
 
 <!--
-Thank you for watching. Join Hay dot Report every Saturday for an update on the Plains hay and forage market. In the meantime, visit www.hay.report for archives and resources. 
+Thank you for watching. Join Hay dot Report every Saturday for an update on the Plains hay and forage market. In the meantime, visit www.hay.report for archives. We love feedback. Please leave a comment with how Hay dot Report can continue to improve and serve you better.  
 -->
