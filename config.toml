@@ -2,7 +2,7 @@ theme = "Hugo-Octopress"
 baseURL = "https://www.hay.report/"
 languageCode = "en-us"
 title = "Hay.Report"
-ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$", "\\.rds$"]
+ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$", "\\.rds$", "\\.csv$"]
 
 
 [[menu.main]]
@@ -45,7 +45,7 @@ post = "/post/:year-:month-:day-:title/"
   continueReadingText = "Would you like to know more? &rarr;"
 
   # Google analytics code - remove if you do not have/want Google Analytics - needs JavaScript
-  #googleAnalytics = "UA-XXXXX-X"
+  googleAnalytics = "UA-131569807-1"
 
   # Optional piwik tracking
   #[params.analytics.piwik]

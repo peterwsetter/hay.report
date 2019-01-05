@@ -27,4 +27,4 @@ gs_read(gs) %>%
   ungroup() ->
   report_data
 
-save(report_data, file = '../data/report_data.rds')
+save(report_data, file = '~/hay.report/data/report_data.rds')
