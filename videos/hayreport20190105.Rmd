@@ -5,18 +5,20 @@ output: ioslides_presentation
 ---
 
 <!--
-Welcome to the Hay Report for the week ending January 5, 2019. Hay dot Report analyzes the hay and forage market across the plains.
+Welcome to the Hay Report for the week ending January 5, 2019. Hay dot Report analyzes the hay and forage market across the plains states of Montana, Wyoming, South Dakota, Colorado, Nebraska, Kansas, Oklahoma, and Texas.
 -->
 
 ## This Week
 
-- No report this week from Corisca, SD, Colorado, or Kansas
+- No report this week from Corsica, SD, Colorado, or Kansas
 - Mild weather in Northern Plains reducing usage and increasing exports
 - Could a jump in costs be coming in the Central and Southern Plains?
+- +33% for cornstalks in Panhandle-High Plains of Texas
+- +21% for dehydrated alfalfa pellets in Eastern and Central Nebraska
 
 <!--
 There was no report this week from the Corsica hay auction, Colorado, or Kansas.
-In this episode, weather is leading to opportunities for producers in the Northern Plains, but could a jump in prices be coming for the Central and Southern Plains?
+In this episode, weather is leading to opportunities for producers in the Northern Plains, but could a jump in prices be coming for the Central and Southern Plains? As of now, prices inreases are limited to several regions and commodities.
 -->
 
 ```{r setup, include=FALSE}
@@ -171,7 +173,7 @@ video_data %>%
 ```
 
 <!--
-Texas Premium Supreme Large Squares also remained steady. 
+Texas Premium Supreme Large Squares were also unchanged. 
 -->
 
 ##
@@ -187,7 +189,7 @@ video_data %>%
 ```
 
 <!--
-After ticking up for a week, median prices for Premium Small Squares ticked back down. The price spread between the Northern Plains and the High Plains of Texas is as large as the distance between the two regions. Even with the hundred dollar difference between regions and declining fuel prices, the eight hundred plus mile shipping cost may be too great for this commodity.
+After ticking up for a week, median prices for Premium Small Squares ticked back down. The price spread between the Northern Plains and the High Plains of Texas is as large as the distance between the two regions. Even with the hundred dollar difference and declining fuel prices, the eight hundred plus mile shipping cost may be too great for this commodity.
 -->
 
 ##
@@ -241,15 +243,34 @@ video_data %>%
 ```
 
 <!--
-The price for Good Large Grass Rounds is largely steady, but prices at Corsica and in Eastern and Central Nebraska suggest a slight downward trend. 
+The price for Good Large Grass Rounds is largely steady, but prices at Corsica and in Eastern and Central Nebraska suggest a slight downward trend. Interestingly, Good Large Rounds in Montana are relatively high compared to other regions.
 -->
 
 ## Higher Prices on the Horizon?
 
-AMS commentary suggests higher prices may be coming to the Central and Southern Plains
+- AMS commentary suggests winter weather may lead to higher prices in the Central and Southern Plains
+- Mild weather in Northern Plains leading to lower local demand and prices
 
 <!--
-Despite prices being steady to a slight downward trend, there are concerns across the Central and Northern plains that recent weather may lead to higher prices.
+Despite hay prices being steady to a slight downward trend, there are concerns that prices may be on the rise for cornstalks and other lower-quality commodities, which, in turn, could result in higher prices for high-quality forages. This contrasts with the Northern Plains, where a mild winter has led to an excess supply of hay.
+-->
+
+## Concerns from South Dakota and Nebraska
+
+Thomas Walthers, reporting on Nebraska
+
+- Halted cornstalk production 
+- Only increase was +$20 for dehydrated alfalfa pellets in eastern NE
+- Milo and corn still being harvested in western NE
+
+Ross Kotewa, Sioux Falls, SD
+
+- Warm weather leading to declining feed yard conditions
+- Increase need for straw bedding
+
+<!--
+Thomas Walthers, who covers Wyoming and Nebraska, reported on the cornstalk storage in Nebraska. Rain and snow over the holidays brought cornstalk production to a halt, while producers in western Nebraska are battling a wet Fall and Winter, with milo and corn still being harvested. Prices are steady for cornstalks, but there has been a sharp increase in dehydrated alfalfa pellets. 
+In South Dakota, Ross Kotewa is reporting that recent mild weather is leading to declining feedlot conditions and an inreased demand for straw bedding.
 -->
 
 ##
@@ -271,11 +292,64 @@ video_data %>%
   ggrepel::geom_text_repel(nudge_x = 1, aes(color = Ground)) +
   scale_color_manual(values = c('black', 'red')) +
   theme_bw() +
-  labs(#title = paste(input_forage, input_quality, input_size, input_shape),
+  labs(title = 'Multi-State Cornstalk',
        x = 'Week Ending',
-        y = 'Price') 
+      y = 'Price') 
 
 ```
+
+<!--
+What may be in store for Nebraska is a thirty-three percent increase like the one saw in the Panhandle and High Plains region of Texas. Two weeks ago, delivered cornstalk bales were 75 dollars but are now selling at 100 dollars. Producers who can grind and ship cornstalks may be in a good position to meet this increased demand.
+-->
+
+##
+
+```{r ap17, fig.height=4.5}
+video_data %>%
+  graph_benchmark(input_forage = 'Dehydrated Alfalfa',
+                  input_quality = '17%',
+                  input_size = '',
+                  input_shape = 'Pellets'
+                  )
+
+```
+
+<!--
+The two week twenty dollar increase in Eastern and Central Nebraska underplays the fifty dollar increase -- over twenty percent -- from three weeks ago. Prices in the Platte Valley have only ticked up. We will see if this remains true or if prices see a similar increase in this region as well as South Central Kansas.
+-->
+
+## Montana and Central/Western Wyoming in Good Position
+
+John Kimbrell reports that in Montana:
+
+- Mild weather 
+- Under-utilization of baled hay 
+- Out-of-state demand for large squares
+
+Thomas Walthers, reporting on Wyoming
+
+- Large squares for dairies
+- Small squares for horse owners
+
+<!--
+In contrast to Nebraska and the High Plains of Texas, prices and demand in Montana and Wyoming remain low. Current sales are being driven by out-of-state buyers. Large alfalfa squares are being bought by dairies, while horse-owners are purchasing small squares.
+-->
+
+## 8 to 14 Day Temperature
+
+![](../static/weather/814temp20190104.gif)
+
+<!--
+The Climate Prediction Center released their eight to fourteen day forecasts on Friday, January 4. Temperatures across the Plains are expected to be above-average.
+-->
+
+## 8 to 14 Day Precipitation
+
+![](../static/weather/814prcp20190104.gif)
+
+<!--
+The higher temperatures may led to conditions drying out in the Central Plains, but there's an increased probability of precipitation for much of the Central and Southern Plains.
+-->
 
 ## Until Next Week
 
@@ -284,3 +358,5 @@ Visit www.hay.report for archives and resources.
 <!--
 Thank you for watching. Join Hay dot Report every Saturday for an update on the Plains hay and forage market. In the meantime, visit www.hay.report for archives. We love feedback. Please leave a comment with how Hay dot Report can continue to improve and serve you better.  
 -->
+
+##
