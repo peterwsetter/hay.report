@@ -161,7 +161,7 @@ After the holidays, benchmark alfalfa commodities are steady. Premium Large Squa
 
 ##
 
-```{r apls, fig.height=4.5}
+```{r tapsls, fig.height=4.5}
 video_data %>%
   #filter(state == 'Texas') %>% 
   graph_benchmark(input_forage = 'Alfalfa',
@@ -178,7 +178,7 @@ Texas Premium Supreme Large Squares were also unchanged.
 
 ##
 
-```{r tpsls, fig.height=4.5}
+```{r apss, fig.height=4.5}
 video_data %>%
   graph_benchmark(input_forage = 'Alfalfa',
                   input_quality = 'Premium',
@@ -215,7 +215,7 @@ save(grass_table, file = paste0('../data-products/grass-table-', CURRENT_DATE, '
 grass_table
 ```
 
-```{r cbpss, fig.height=4.5}
+```{r cbplr, fig.height=4.5}
 video_data %>%
   filter(state == 'Texas') %>% 
   graph_benchmark(input_forage = 'Coastal Bermuda',
@@ -337,7 +337,10 @@ In contrast to Nebraska and the High Plains of Texas, prices and demand in Monta
 
 ## 8 to 14 Day Temperature
 
-![](../static/weather/814temp20190104.gif)
+```{r, out.height="500px"}
+knitr::include_graphics("../static/weather/814temp20190104.gif")
+```
+
 
 <!--
 The Climate Prediction Center released their eight to fourteen day forecasts on Friday, January 4. Temperatures across the Plains are expected to be above-average.
@@ -345,7 +348,10 @@ The Climate Prediction Center released their eight to fourteen day forecasts on 
 
 ## 8 to 14 Day Precipitation
 
-![](../static/weather/814prcp20190104.gif)
+```{r, out.height="500px"}
+knitr::include_graphics("../static/weather/814prcp20190104.gif")
+```
+
 
 <!--
 The higher temperatures may led to conditions drying out in the Central Plains, but there's an increased probability of precipitation for much of the Central and Southern Plains.
